@@ -6,7 +6,7 @@ import {
   TextInput, 
   Platform,
   Alert,
-  FlatList
+  FlatList,
 } from 'react-native';
 import { Button } from './components/Button';
 import { SkillCard } from './components/SkillCard';
