@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -15,6 +15,7 @@ export function Home() {
 
   const [newSkill, setNewSkill] = useState('')
   const [mySkills, setMySkills] = useState([])
+  const [greeting, setGreeting] = useState('')
 
   function handleAddNewSkill() {
     if(newSkill === '') {
@@ -26,9 +27,26 @@ export function Home() {
     setMySkills([...mySkills, newSkill] as any) 
   }
 
+  // useEffect(função arrow-> () => {}, dependencias-> [])
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+
+    if(currentHour < 12) {
+      setGreeting('Bom dia')
+    } else if(currentHour >= 12 && currentHour < 18) {
+      setGreeting('Bom tarde')
+    } else {
+      setGreeting('Boa noite')
+    }
+  }, [])
+
   return(
     <View style={styles.container}>
-      <Text  style={styles.title}>Welcome, Fabiano Ramos</Text>
+      <Text style={[styles.title, { marginVertical: 25 }]}>
+        My Skills
+      </Text>
+
+      <Text  style={styles.title}>{`${greeting}, Fabiano Ramos`}</Text>
       <TextInput 
         style={styles.input}
         placeholder='New skill'
@@ -39,7 +57,7 @@ export function Home() {
       <Button onPress={handleAddNewSkill} />
 
       <Text style={[styles.title, { marginVertical: 25 }]}>
-        My Skills: {`${mySkills.length}`}
+        Skill Counter: {`${mySkills.length}`}
       </Text>
 
       <FlatList
