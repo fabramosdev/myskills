@@ -13,7 +13,7 @@ import { SkillCard } from './components/SkillCard';
 
 interface ISkillData {
   id: string;
-  name: string
+  name: string;
 }
 
 export function Home() {
@@ -79,7 +79,17 @@ export function Home() {
         renderItem={({ item }) => (
           <SkillCard 
             skill={item.name}
-            onPress={() => handleRemoveSkill(item.id)}
+            onPress={() => Alert.alert('Confirmação', `Deseja excluir ${item.name} de suas skills?`, [
+              {
+                text: 'Cancelar',
+                onPress: () => {},
+                style: 'cancel' 
+              },
+              {
+                text: 'Excluir',
+                onPress: () => handleRemoveSkill(item.id)
+              }
+            ])}
           />
         )}
       />
