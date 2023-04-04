@@ -11,20 +11,32 @@ import {
 import { Button } from './components/Button';
 import { SkillCard } from './components/SkillCard';
 
+interface ISkillData {
+  id: string;
+  name: string
+}
+
 export function Home() {
 
   const [newSkill, setNewSkill] = useState('')
-  const [mySkills, setMySkills] = useState([])
+  const [mySkills, setMySkills] = useState<ISkillData[]>([])
   const [greeting, setGreeting] = useState('')
 
   function handleAddNewSkill() {
+    const data = {
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
     if(newSkill === '') {
       Alert.alert('Ops', 'Você esqueceu de escrever sua skill! :(')
-
       return
     }
 
-    setMySkills([...mySkills, newSkill] as any) 
+    setMySkills([...mySkills, data]) 
+  }
+
+  function handleRemoveSkill(id: string) {
+    setMySkills(oldState => oldState.filter(skill => skill.id !== id))
   }
 
   // useEffect(função arrow-> () => {}, dependencias-> [])
@@ -54,7 +66,7 @@ export function Home() {
         onChangeText={setNewSkill}
       />
       
-      <Button onPress={handleAddNewSkill} />
+      <Button onPress={handleAddNewSkill} title='Adicionar Skill' />
 
       <Text style={[styles.title, { marginVertical: 25 }]}>
         Skill Counter: {`${mySkills.length}`}
@@ -63,9 +75,12 @@ export function Home() {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={mySkills}
-        keyExtractor={item => item}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <SkillCard skill={item} />
+          <SkillCard 
+            skill={item.name}
+            onPress={() => handleRemoveSkill(item.id)}
+          />
         )}
       />
     </View>
